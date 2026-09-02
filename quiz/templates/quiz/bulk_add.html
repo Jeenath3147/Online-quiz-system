@@ -1,0 +1,55 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="bulk-add-container">
+    <h2>Bulk Add Questions</h2>
+
+    {% if added_count %}
+        <p class="success-message">✅ Added {{ added_count }} question{{ added_count|pluralize }} to "{{ saved_quiz_title }}".</p>
+    {% endif %}
+
+    {% if errors %}
+        <div class="error-box">
+            <p><strong>Nothing was saved. Please fix the following and try again:</strong></p>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="format-help">
+        <p><strong>Format:</strong> one blank line between questions. First line is the
+        question. Every line after it is a choice. Put a <code>*</code> at the start of
+        the one correct choice.</p>
+        <pre>What does CSS stand for?
+*Cascading Style Sheets
+Creative Style System
+Computer Styled Sections
+
+Which HTTP method is used to submit a form that changes server data?
+GET
+*POST
+LINK</pre>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="quiz_title" class="bulk-label">Quiz heading</label>
+        <input type="text" name="quiz_title" id="quiz_title" class="quiz-title-input"
+               placeholder="e.g. Java Basics" value="{{ quiz_title }}">
+        <p class="bulk-hint">Type an existing quiz's heading to add more questions to it, or a new
+        heading to start a brand new, separate quiz.</p>
+
+        <textarea name="questions_text" rows="14" placeholder="Paste your questions here...">{{ pasted_text }}</textarea>
+        <button type="submit" class="submit-btn">Add Questions</button>
+    </form>
+
+    <p class="auth-switch">
+        Prefer a file instead? Use the <code>load_questions</code> management command from
+        the terminal: <code>python manage.py load_questions your_file.txt --quiz "Quiz Heading"</code> — it
+        accepts the exact same format as above.
+    </p>
+</div>
+{% endblock %}

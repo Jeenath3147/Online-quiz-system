@@ -1,0 +1,36 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="result-container">
+    <h2>🏆 Your Score</h2>
+    <div class="score-circle">
+        <span class="score-value">{{ score }}</span>
+        <span class="score-total">/ {{ questions_count }}</span>
+    </div>
+    {% widthratio score questions_count 100 as percent %}
+    <div class="score-bar">
+        <div class="score-bar-fill" style="width: {{ percent }}%;"></div>
+    </div>
+    <p class="score-percent">{{ percent }}% correct</p>
+    <a href="{% url 'take-quiz' quiz_obj.id %}" class="back-btn">Try Again</a>
+    <a href="{% url 'quiz-home' %}" class="back-btn back-btn-secondary">Back to Home</a>
+</div>
+
+<div class="quiz-container review-container">
+    <h2>Review your answers</h2>
+    {% for item in review %}
+        <div class="question-block review-block {% if item.is_correct %}review-correct{% else %}review-wrong{% endif %}">
+            <p class="question-text"><span class="q-number">{{ forloop.counter }}</span>{{ item.question.question_text }}</p>
+            <div class="choices">
+                <p class="review-line">
+                    {% if item.is_correct %}✅{% else %}❌{% endif %}
+                    Your answer: {{ item.selected_choice.option_text|default:"No answer selected" }}
+                </p>
+                {% if not item.is_correct %}
+                    <p class="review-line review-correct-line">✔️ Correct answer: {{ item.correct_choice.option_text }}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

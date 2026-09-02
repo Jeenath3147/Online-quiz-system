@@ -1,0 +1,66 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="quiz-container">
+    <div class="quiz-header-row">
+        <h2><span class="title-icon">🧠</span> {{ quiz_obj.title }}</h2>
+        {% if questions %}
+            <div class="quiz-timer" id="quiz-timer">{{ quiz_obj.time_limit_minutes }}:00</div>
+        {% endif %}
+    </div>
+    {% if questions %}
+    <form method="post" id="quiz-form">
+        {% csrf_token %}
+        {% for question in questions %}
+            <div class="question-block">
+                <p class="question-text"><span class="q-number">{{ forloop.counter }}</span>{{ question.question_text }}</p>
+                <div class="choices">
+                    {% for choice in question.choice_set.all %}
+                        <label class="choice-label">
+                            <input type="radio" name="q{{ question.id }}" value="{{ choice.id }}">
+                            <span class="choice-text">{{ choice.option_text }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        <button type="submit" class="submit-btn">Submit Answers</button>
+    </form>
+    {% else %}
+        <p class="empty-state">No questions yet. Ask an admin to add some!</p>
+    {% endif %}
+</div>
+
+{% if questions %}
+<script>
+    (function () {
+        var totalSeconds = {{ quiz_obj.time_limit_minutes }} * 60;
+        var timerEl = document.getElementById('quiz-timer');
+        var form = document.getElementById('quiz-form');
+        var submitted = false;
+
+        function tick() {
+            if (submitted) {
+                return;
+            }
+            if (totalSeconds <= 0) {
+                submitted = true;
+                timerEl.textContent = "Time's up!";
+                form.submit();
+                return;
+            }
+            var minutes = Math.floor(totalSeconds / 60);
+            var seconds = totalSeconds % 60;
+            timerEl.textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            if (totalSeconds <= 60) {
+                timerEl.classList.add('quiz-timer-low');
+            }
+            totalSeconds -= 1;
+        }
+
+        tick();
+        setInterval(tick, 1000);
+    })();
+</script>
+{% endif %}
+{% endblock %}

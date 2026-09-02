@@ -1,0 +1,41 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="hero">
+    <h1>Test your knowledge</h1>
+    <p class="hero-sub">Pick a quiz below to see what's inside. You'll only need to log in when you're ready to start answering.</p>
+</div>
+
+<div class="quiz-list">
+    {% for quiz in quizzes %}
+        <div class="quiz-card">
+            <div class="quiz-card-icon">🧠</div>
+            <div class="quiz-card-body">
+                <h3>{{ quiz.title }}</h3>
+                <p class="quiz-card-meta">{{ quiz.question_count }} question{{ quiz.question_count|pluralize }} available</p>
+            </div>
+            {% if quiz.question_count %}
+                <a href="{% url 'take-quiz' quiz.id %}" class="submit-btn">Start Quiz</a>
+            {% else %}
+                <span class="empty-state">No questions yet</span>
+            {% endif %}
+        </div>
+    {% empty %}
+        <div class="quiz-card">
+            <p class="empty-state">No quizzes yet — ask an admin to add some questions.</p>
+        </div>
+    {% endfor %}
+</div>
+
+{% if quizzes.paginator.num_pages > 1 %}
+    <div class="pagination">
+        {% if quizzes.has_previous %}
+            <a href="?page={{ quizzes.previous_page_number }}" class="back-btn back-btn-secondary">← Prev</a>
+        {% endif %}
+        <span class="pagination-status">Page {{ quizzes.number }} of {{ quizzes.paginator.num_pages }}</span>
+        {% if quizzes.has_next %}
+            <a href="?page={{ quizzes.next_page_number }}" class="back-btn back-btn-secondary">Next →</a>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="auth-container">
+    <h2>Welcome Back</h2>
+    <p class="auth-subtitle">Log in to take the quiz</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="submit-btn">Login</button>
+    </form>
+    <p class="auth-switch"><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+    <p class="auth-switch">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+</div>
+{% endblock %}

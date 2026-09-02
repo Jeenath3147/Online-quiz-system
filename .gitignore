@@ -1,0 +1,15 @@
+# Never upload your real secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+myenv1/
+
+# Django
+db.sqlite3
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

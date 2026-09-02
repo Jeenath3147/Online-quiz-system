@@ -1,0 +1,25 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="bulk-add-container">
+    <h2>Edit "{{ quiz_obj.title }}"</h2>
+
+    {% if error %}
+        <div class="error-box"><p>{{ error }}</p></div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="title" class="bulk-label">Quiz heading</label>
+        <input type="text" name="title" id="title" class="quiz-title-input" value="{{ quiz_obj.title }}">
+
+        <label for="time_limit_minutes" class="bulk-label">Time limit (minutes)</label>
+        <input type="number" name="time_limit_minutes" id="time_limit_minutes" class="quiz-title-input"
+               min="1" value="{{ quiz_obj.time_limit_minutes }}">
+        <p class="bulk-hint">How many minutes someone gets to finish this quiz before it's auto-submitted.</p>
+
+        <button type="submit" class="submit-btn">Save changes</button>
+        <a href="{% url 'manage-quizzes' %}" class="back-btn back-btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

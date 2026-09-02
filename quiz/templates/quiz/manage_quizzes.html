@@ -1,0 +1,26 @@
+{% extends 'quiz/base.html' %}
+
+{% block content %}
+<div class="bulk-add-container">
+    <h2>Manage Quizzes</h2>
+    <p class="bulk-hint">Rename a quiz, change how many minutes it gives someone to finish it, or delete it completely.</p>
+
+    <div class="quiz-list">
+        {% for quiz in quizzes %}
+            <div class="quiz-card">
+                <div class="quiz-card-icon">🧠</div>
+                <div class="quiz-card-body">
+                    <h3>{{ quiz.title }}</h3>
+                    <p class="quiz-card-meta">{{ quiz.question_count }} question{{ quiz.question_count|pluralize }} · {{ quiz.time_limit_minutes }} minute{{ quiz.time_limit_minutes|pluralize }} to finish</p>
+                </div>
+                <a href="{% url 'edit-quiz' quiz.id %}" class="back-btn back-btn-secondary">Edit</a>
+                <a href="{% url 'delete-quiz' quiz.id %}" class="back-btn back-btn-secondary">Delete</a>
+            </div>
+        {% empty %}
+            <div class="quiz-card">
+                <p class="empty-state">No quizzes yet — use Bulk Add to create one.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
