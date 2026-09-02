@@ -7,7 +7,9 @@
 
 A web-based quiz application built with **Django**. Users can register, log in, take timed quizzes, and instantly see their score with a full answer review. Staff members get a dedicated page to manage quizzes and can bulk-upload questions.
 
-> 💡 *Add a live demo link here once deployed (e.g. Render, Railway, PythonAnywhere), and a screenshot or GIF of the app below — this is the single biggest thing that makes a project README stand out.*
+**🔗 Live demo:** [jeenath3147.pythonanywhere.com](https://jeenath3147.pythonanywhere.com)
+
+> 💡 *Add a screenshot or GIF of the app below — this is the single biggest thing left that would make this README stand out even more.*
 
 <!-- ![App Screenshot](docs/screenshot.png) -->
 
@@ -90,8 +92,10 @@ If `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` are left blank in `.env`, passwor
 Staff can add many questions to a quiz at once, either through the **"Bulk Add"** page in the nav bar or with the `load_questions` management command:
 
 ```bash
-python manage.py load_questions your_file.txt
+python manage.py load_questions your_file.txt --quiz "Quiz Name"
 ```
+
+(`--quiz` must exactly match the name of an existing quiz — create the quiz first through "Manage Quizzes", then load its questions in.)
 
 Both use the same plain-text format:
 
@@ -117,7 +121,7 @@ onlinequiz/
 
 ## 🗺 Roadmap
 
-- [ ] Deploy a live demo
+- [x] Deploy a live demo
 - [ ] Add automated tests
 - [ ] Add per-category quiz filtering
 - [ ] Add a leaderboard
