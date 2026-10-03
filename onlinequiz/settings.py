@@ -140,6 +140,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+# Folder where 'collectstatic' gathers all CSS/images for the live site.
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 # Authentication
