@@ -63,7 +63,7 @@ def quiz(request, quiz_id):
         review = []
         for q in questions:
             selected_id = request.POST.get(f"q{q.id}")
-            selected_choice = Choice.objects.filter(id=selected_id).first() if selected_id else None
+            selected_choice = q.choice_set.filter(id=selected_id).first() if selected_id else None
             correct_choice = q.choice_set.filter(is_correct=True).first()
             is_correct = bool(selected_choice and selected_choice.is_correct)
             if is_correct:

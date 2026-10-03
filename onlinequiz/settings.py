@@ -29,17 +29,19 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# Falls back to the old hardcoded key only if .env is somehow missing, so
-# the project never just crashes — but .env should always provide this.
-SECRET_KEY = os.environ.get(
-    'SECRET_KEY',
-    'django-insecure-+n6(8lsa2lmvak#n^+#vbtgw^r=9-95323xo!brmt&ba7gz34o',
-)
+# The key is read ONLY from the .env file (never written in the code).
+# If .env is missing it, the site stops with a clear message instead of
+# quietly using a key that everyone on GitHub can see.
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured('SECRET_KEY is missing - add it to your .env file.')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# Reads "DEBUG=True" or "DEBUG=False" from .env. Defaults to True (safe for
-# your own laptop) if .env doesn't set it at all.
-DEBUG = os.environ.get('DEBUG', 'True').strip().lower() == 'true'
+# Reads "DEBUG=True" or "DEBUG=False" from .env. Defaults to False (safe for
+# the live site) if .env doesn't set it - put DEBUG=True in your laptop's .env.
+DEBUG = os.environ.get('DEBUG', 'False').strip().lower() == 'true'
 
 # Comma-separated list in .env, e.g. ALLOWED_HOSTS=127.0.0.1,localhost
 # Once this project is hosted somewhere, its public address gets added here.
